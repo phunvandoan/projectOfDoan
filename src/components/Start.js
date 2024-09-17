@@ -1,22 +1,23 @@
 import { useRef } from "react";
 
-export default function Start({ setUsername }) {
+function Start({ setUserName }) {
   const inputRef = useRef();
-
   const handleClick = () => {
-    inputRef.current.value && setUsername(inputRef.current.value);
+    inputRef.current.value && setUserName(inputRef.current.value);
   };
-
   return (
-    <div className="start">
+    <div className="quiz_start">
       <input
-        className="startInput"
-        placeholder="enter your name"
         ref={inputRef}
+        type="quiz_text"
+        placeholder="Enter your name"
+        className="quiz_startInput"
       />
-      <button className="startButton" onClick={handleClick}>
+      <button className="quiz_buttonStart" onClick={handleClick}>
         Start
       </button>
     </div>
   );
 }
+
+export default Start;
