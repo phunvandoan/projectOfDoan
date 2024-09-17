@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Routing App</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" style="width: 100%; height: 100vh"></div>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+    <script>
+      var map = L.map("map").setView([21.00321, 105.84774], 11);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      var waypoints = [];
+      var markers = [];
+      var routingControl = null;
+      var pointsSelected = false; // Flag to track if points are already selected
+
+      map.on("click", function (e) {
+        if (pointsSelected) return; // Do not add more points if already selected
+
+        var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+        markers.push(marker);
+        waypoints.push(L.latLng(e.latlng.lat, e.latlng.lng));
+
+        if (waypoints.length === 2) {
+          if (routingControl) {
+            map.removeControl(routingControl);
+          }
+
+          routingControl = L.Routing.control({
+            waypoints: waypoints,
+          }).addTo(map);
+          pointsSelected = true; // Set flag to true once two points are selected
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          waypoints = [];
+          markers.forEach(function (marker) {
+            map.removeLayer(marker);
+          });
+          markers = [];
+
+          if (routingControl) {
+            map.removeControl(routingControl);
+            routingControl = null;
+          }
+
+          pointsSelected = false; // Reset flag when points are cleared
+        }
+      });
+
+      // Add the geocoder control to the map
+      var geocoder = L.Control.geocoder({
+        defaultMarkGeocode: false,
+      })
+        .on("markgeocode", function (e) {
+          if (pointsSelected) return; // Do not add more points if already selected
+
+          //   var bbox = e.geocode.bbox;
+          //   var poly = L.polygon([
+          //     bbox.getSouthEast(),
+          //     bbox.getNorthEast(),
+          //     bbox.getNorthWest(),
+          //     bbox.getSouthWest(),
+          //   ]).addTo(map);
+          //   map.fitBounds(poly.getBounds());
+
+          var marker = L.marker(e.geocode.center).addTo(map);
+          map.setView(e.geocode.center, 16);
+          markers.push(marker);
+          waypoints.push(e.geocode.center);
+
+          if (waypoints.length === 2) {
+            if (routingControl) {
+              map.removeControl(routingControl);
+            }
+
+            routingControl = L.Routing.control({
+              waypoints: waypoints,
+            }).addTo(map);
+            pointsSelected = true; // Set flag to true once two points are selected
+          }
+        })
+        .addTo(map);
+    </script>
+  </body>
+</html>
