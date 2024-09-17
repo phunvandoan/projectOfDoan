@@ -5,15 +5,15 @@ import "./intro.scss";
 function Intro() {
   const textRef = useRef();
 
-  useEffect(() => {
-    return () =>
-      init(textRef.current, {
-        showCursor: true,
-        backDelay: 1500,
-        backSpeed: 60,
-        strings: ["Developer", "Designer", "Content Creator"],
-      });
-  }, []);
+  // useEffect(() => {
+  //   return () =>
+  //     init(textRef.current, {
+  //       showCursor: true,
+  //       backDelay: 1500,
+  //       backSpeed: 60,
+  //       strings: ["Developer", "Designer", "Content Creator"],
+  //     });
+  // }, []);
 
   return (
     <div id="intro" className="intro">
@@ -31,7 +31,9 @@ function Intro() {
           <h1>CodeCuaDoan</h1>
           <h3>
             Freelance_
-            <span ref={textRef}></span>
+            <span ref={textRef} style={{ color: "crimson" }}>
+              Developer
+            </span>
           </h3>
         </div>
         <a href="#portfolio">{/* <img src="assets/down.png" alt="" /> */}</a>
