@@ -15,13 +15,11 @@ dotenv.config();
 app.use(express.json());
 app.use(morgan("common"));
 
-mongoose.connect(
-  "mongodb+srv://root:123@cluster0.g4kuqcq.mongodb.net/blogApp?retryWrites=true&w=majority&appName=Cluster0"
-);
+mongoose.connect(process.env.MONGO_URL);
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://project-of-doan-clnp.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
