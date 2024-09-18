@@ -12,7 +12,9 @@ function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("http://localhost:5000/api/posts" + search);
+      const res = await axios.get(
+        "https://projectofdoan.onrender.com/posts" + search
+      );
       setPosts(res.data);
     };
     fetchPosts();

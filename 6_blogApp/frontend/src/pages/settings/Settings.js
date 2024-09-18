@@ -30,14 +30,14 @@ function Settings() {
       data.append("file", file);
       updateUser.profilePic = filename;
       try {
-        await axios.post("http://localhost:5000/api/upload", data);
+        await axios.post("https://projectofdoan.onrender.com/upload", data);
       } catch (err) {
         console.log(err);
       }
     }
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/users/${user._id}`,
+        `https://projectofdoan.onrender.com/users/${user._id}`,
         updateUser
       );
       setSuccess(true);

@@ -17,7 +17,9 @@ function SinglePost() {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(`http://localhost:5000/api/posts/` + path);
+      const res = await axios.get(
+        `https://projectofdoan.onrender.com/posts/` + path
+      );
       setPost(res.data);
     };
     getPost();
@@ -25,9 +27,12 @@ function SinglePost() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
-        data: { username: user.username },
-      });
+      await axios.delete(
+        `https://projectofdoan.onrender.com/posts/${post._id}`,
+        {
+          data: { username: user.username },
+        }
+      );
       window.location.replace("/");
     } catch (err) {
       console.log(err);
@@ -36,7 +41,7 @@ function SinglePost() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/posts/${post._id}`, {
+      await axios.put(`https://projectofdoan.onrender.com/posts/${post._id}`, {
         username: user.username,
         title,
         desc,

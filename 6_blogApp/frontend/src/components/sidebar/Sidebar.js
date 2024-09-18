@@ -8,7 +8,9 @@ function Sidebar() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const res = await axios.get("http://localhost:5000/api/categories");
+      const res = await axios.get(
+        "https://projectofdoan.onrender.com/categories"
+      );
       setCats(res.data);
     };
     getCategories();
